@@ -6,4 +6,6 @@ package main.upm.simple.banking.model;
  */
 public class Account {
 
+    private String accountNumber;
+
 }
