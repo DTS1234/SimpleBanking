@@ -25,4 +25,9 @@ public class TransactionRepository implements Repository<Transaction> {
     public List<Transaction> findAll() {
         return null;
     }
+
+    @Override
+    public void delete(Transaction o) {
+
+    }
 }

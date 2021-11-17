@@ -2,6 +2,11 @@ package main.upm.simple.banking.persistance;
 
 import main.upm.simple.banking.model.Account;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -11,7 +16,20 @@ import java.util.List;
 public class AccountRepository  implements Repository<Account>{
 
     @Override
-    public Account save(Account o) {
+    public Account save(Account accountToBeSaved) {
+
+        String pathname = "accounts.txt";
+        File file = new File(pathname);
+
+        try {
+            BufferedWriter accountFile = Files.newBufferedWriter(Path.of(pathname));
+
+
+
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+
         return null;
     }
 
@@ -23,5 +41,10 @@ public class AccountRepository  implements Repository<Account>{
     @Override
     public List<Account> findAll() {
         return null;
+    }
+
+    @Override
+    public void delete(Account o) {
+
     }
 }

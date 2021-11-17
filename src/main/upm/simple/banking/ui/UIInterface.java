@@ -7,7 +7,7 @@ package main.upm.simple.banking.ui;
 public class UIInterface {
 
     /**
-     * Depending on the input should run appropiate command.
+     * Depending on the input should run appropriate command.
      */
     public void runTheCommand() {
     }
