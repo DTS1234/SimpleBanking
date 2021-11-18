@@ -2,7 +2,10 @@ package main.upm.simple.banking.persistance;
 
 import main.upm.simple.banking.model.Account;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 public class AccountRepository implements Repository<Account> {
 
     public static final String ACCOUNTS_TXT = "accounts.txt";
+    public static final String EMPTY = "empty";
     private static AccountRepository accountRepository = null;
 
     private AccountRepository() {
@@ -33,13 +37,13 @@ public class AccountRepository implements Repository<Account> {
             String newLine = getAsALine(accountToBeSaved);
             Optional<Account> toBeReplaced = findAll().stream().filter(account -> accountToBeSaved.getAccountNumber().equals(account.getAccountNumber())).findFirst();
             String oldLine = getAsALine(toBeReplaced.get());
-            replaceLines(newLine, oldLine);
+            replaceLines(newLine, oldLine, ACCOUNTS_TXT);
         } else {
             BufferedWriter accountsWriter = null;
             try {
                 accountsWriter = Files.newBufferedWriter(Path.of(ACCOUNTS_TXT), StandardOpenOption.APPEND);
                 accountsWriter.write(accountToBeSaved.getAccountNumber() + "," + accountToBeSaved.getBalance() + ",");
-                accountsWriter.write("empty");
+                accountsWriter.write(EMPTY);
                 accountsWriter.write(System.lineSeparator());
 
             } catch (IOException ioException) {
@@ -56,7 +60,8 @@ public class AccountRepository implements Repository<Account> {
         return accountToBeSaved;
     }
 
-    private String getAsALine(Account accountToBeSaved) {
+    @Override
+    public String getAsALine(Account accountToBeSaved) {
 
         String transactions = accountToBeSaved.getTransactionIds().isEmpty() ? "empty" : accountToBeSaved.getTransactionIds()
                 .stream()
@@ -120,68 +125,12 @@ public class AccountRepository implements Repository<Account> {
 
     @Override
     public void deleteById(Object accountNumber) {
-
         List<Account> all = findAll();
         Account accountToBeDeleted = all.stream().filter(account -> account.getAccountNumber().equals(accountNumber)).findFirst().orElseThrow(
                 () -> new AccountNotFoundException("There is no account with that number : " + accountNumber)
         );
+        removeLine(getAsALine(accountToBeDeleted), ACCOUNTS_TXT);
 
-        removeLine(getAsALine(accountToBeDeleted));
-
-    }
-
-    public void replaceLines(String newLine, String toReplace) {
-        try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(ACCOUNTS_TXT))) {
-            StringBuffer inputBuffer = new StringBuffer();
-            String currentLine;
-
-            while ((currentLine = bufferedReader.readLine()) != null) {
-
-                if (toReplace.equals("")) {
-                    currentLine = currentLine.trim();
-                }
-
-                if (toReplace.equals(currentLine)) {
-                    currentLine = newLine;
-                }
-
-                inputBuffer.append(currentLine);
-                inputBuffer.append('\n');
-            }
-            bufferedReader.close();
-
-            // write the new string with the replaced line OVER the same file
-            FileOutputStream fileOut = new FileOutputStream(ACCOUNTS_TXT);
-            fileOut.write(inputBuffer.toString().getBytes());
-            fileOut.close();
-
-        } catch (Exception e) {
-            System.out.println("Problem reading file.");
-        }
-    }
-
-    public void removeLine(String toRemove) {
-        try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(ACCOUNTS_TXT))) {
-            StringBuffer inputBuffer = new StringBuffer();
-            String currentLine;
-
-            while ((currentLine = bufferedReader.readLine()) != null) {
-
-                if (!currentLine.trim().equals(toRemove)) {
-                    inputBuffer.append(currentLine);
-                    inputBuffer.append('\n');
-                }
-            }
-            bufferedReader.close();
-
-            // write the new string with the replaced line OVER the same file
-            FileOutputStream fileOut = new FileOutputStream(ACCOUNTS_TXT);
-            fileOut.write(inputBuffer.toString().getBytes());
-            fileOut.close();
-
-        } catch (Exception e) {
-            System.out.println("Problem reading file.");
-        }
     }
 
 }

@@ -30,6 +30,19 @@ public class Account {
         return transactionIds;
     }
 
+    public String transactionsString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Long id : transactionIds) {
+            if (transactionIds.size() - 1 == transactionIds.indexOf(id)) {
+                stringBuilder.append(id);
+            } else {
+                stringBuilder.append(id).append(", ");
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
     @Override
     public String toString() {
         return "Account{" +

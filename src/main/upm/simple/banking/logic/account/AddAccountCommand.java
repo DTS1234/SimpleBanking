@@ -12,11 +12,7 @@ import java.util.List;
  */
 public class AddAccountCommand {
 
-    private AccountRepository accountRepository;
-
-    public AddAccountCommand(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
+    private AccountRepository accountRepository = AccountRepository.getInstance();
 
     /**
      * This command adds a new account to the system. The account numbers start with
@@ -32,7 +28,7 @@ public class AddAccountCommand {
         if (currentAccounts == null || currentAccounts.isEmpty()) {
             account = new Account("000000", 0, new ArrayList<>());
             accountRepository.save(account);
-        }else {
+        } else {
             account = saveAccountWithNewNumber(currentAccounts);
         }
 
@@ -61,7 +57,9 @@ public class AddAccountCommand {
         return accountRepository.save(account);
     }
 
-    /** Retrieves the final account number by adding the zeroes to plain integer representing the counter of the new account. */
+    /**
+     * Retrieves the final account number by adding the zeroes to plain integer representing the counter of the new account.
+     */
     private StringBuilder getFinalAccountNumberToBeAdded(String stringWithoutZeroes) {
         StringBuilder finalAccountNumberToBeAdded = new StringBuilder();
         if (stringWithoutZeroes.length() != 6) {
@@ -72,7 +70,9 @@ public class AddAccountCommand {
         return finalAccountNumberToBeAdded;
     }
 
-    /** Retrieves the plain integer number from the lastly created account. */
+    /**
+     * Retrieves the plain integer number from the lastly created account.
+     */
     private int getNumberToIncrease(String lastAccountNumber) {
         int firstNumberOccurrenceInAccountString = 0;
         for (int i = 0; i < lastAccountNumber.length(); i++) {

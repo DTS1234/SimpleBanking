@@ -9,7 +9,7 @@ public class ListAccountNumbersCommand {
     /**
      * This command displays a list of all accounts sorted descending by account number.
      */
-    void execute() {
+    public void execute() {
 
     }
 
