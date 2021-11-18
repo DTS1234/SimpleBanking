@@ -6,11 +6,17 @@ package main.upm.simple.banking.logic.account;
  */
 public class ViewAccountCommand {
 
+    private String accountNumber;
+
+    public ViewAccountCommand(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
     /**
      * This command shows the information of a particular account. This information
      * comprises the account ID and the account balance of that account..
      */
-    void execute() {
+    public void execute() {
 
     }
 

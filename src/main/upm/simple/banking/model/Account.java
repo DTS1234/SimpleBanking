@@ -29,4 +29,13 @@ public class Account {
     public List<Long> getTransactionIds() {
         return transactionIds;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountNumber='" + accountNumber + '\'' +
+                ", balance=" + balance +
+                ", transactionIds=" + transactionIds +
+                '}';
+    }
 }
