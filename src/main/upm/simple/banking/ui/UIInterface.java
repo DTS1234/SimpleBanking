@@ -5,6 +5,8 @@ import main.upm.simple.banking.logic.program.HelpCommand;
 import main.upm.simple.banking.logic.transaction.ExecuteTransactionCommand;
 import main.upm.simple.banking.persistance.AccountRepository;
 
+import java.util.Scanner;
+
 /**
  * @author akazmierczak
  * @create 17.11.2021
@@ -13,11 +15,19 @@ public class UIInterface {
 
     private AccountRepository accountRepository = AccountRepository.getInstance();
 
+    public void run() {
+
+        while (true) {
+            System.out.println("Enter the command: ");
+            String input = readAnInput();
+            runTheCommand(input);
+        }
+    }
+
     /**
      * Depending on the input should run appropriate command.
      */
     public void runTheCommand(String input) {
-
         if (input.startsWith("delete_account ")) {
             String accountNumber = getArguments(input, 1, "Delete command should receive one argument in the format of account number")[1];
             new DeleteAccountCommand(accountNumber).execute();
@@ -50,6 +60,7 @@ public class UIInterface {
             Verify.verifyAccountNumber(accountNumber);
             new ViewAccountCommand(accountNumber).execute();
         } else if (input.startsWith("view_transactions")) {
+            System.out.println("View transactions now!");
             String[] argumentsViewTransactions = getArgumentsViewTransactions(input, "View transactions command should receive one two or no arguments.");
             if (argumentsViewTransactions.length == 0) {
 
@@ -78,9 +89,8 @@ public class UIInterface {
      * Should return the character entered by the user.
      */
     private String readAnInput() {
-
-
-        return null;
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
     }
 
 
