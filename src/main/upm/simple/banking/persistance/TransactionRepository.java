@@ -16,7 +16,7 @@ public class TransactionRepository implements Repository<Transaction> {
     }
 
     @Override
-    public Transaction findById(Transaction o) {
+    public Transaction findById(Object o) {
         return null;
     }
 
@@ -27,7 +27,7 @@ public class TransactionRepository implements Repository<Transaction> {
     }
 
     @Override
-    public void delete(Transaction o) {
+    public void deleteById(Object o) {
 
     }
 }

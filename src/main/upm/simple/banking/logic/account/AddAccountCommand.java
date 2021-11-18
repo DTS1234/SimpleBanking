@@ -24,12 +24,12 @@ public class AddAccountCommand {
      * notified that the new account has been created and the account number and balance
      * are shown.
      */
-    void execute() {
+    public void execute() {
 
         List<Account> currentAccounts = accountRepository.findAll();
 
         Account account;
-        if (currentAccounts.isEmpty()) {
+        if (currentAccounts == null || currentAccounts.isEmpty()) {
             account = new Account("000000", 0, new ArrayList<>());
             accountRepository.save(account);
         }else {
@@ -37,8 +37,8 @@ public class AddAccountCommand {
         }
 
         String message = String.format("New account created successfully, \n" +
-                "account number : %s\n" +
-                "balance : 0", account.getAccountNumber());
+                "\taccount number : %s\n" +
+                "\tbalance : 0", account.getAccountNumber());
 
         System.out.println(message);
 

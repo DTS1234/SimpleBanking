@@ -9,8 +9,8 @@ import java.util.List;
 public interface Repository<T> {
 
     T save(T o);
-    T findById(T o);
+    T findById(Object o);
     List<T> findAll();
-    void delete(T o);
+    void deleteById(Object o);
 
 }
