@@ -51,4 +51,16 @@ public class Account {
                 ", transactionIds=" + transactionIds +
                 '}';
     }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void setTransactionIds(List<Long> transactionIds) {
+        this.transactionIds = transactionIds;
+    }
 }

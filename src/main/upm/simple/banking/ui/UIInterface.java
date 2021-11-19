@@ -4,9 +4,9 @@ import main.upm.simple.banking.logic.account.*;
 import main.upm.simple.banking.logic.program.ExitCommand;
 import main.upm.simple.banking.logic.program.HelpCommand;
 import main.upm.simple.banking.logic.transaction.ExecuteTransactionCommand;
+import main.upm.simple.banking.logic.transaction.InvalidTransactionException;
 import main.upm.simple.banking.logic.transaction.ViewTransactionsCommand;
 import main.upm.simple.banking.persistance.AccountNotFoundException;
-import main.upm.simple.banking.persistance.AccountRepository;
 import main.upm.simple.banking.persistance.TransactionNotFoundException;
 
 import java.util.Scanner;
@@ -16,8 +16,6 @@ import java.util.Scanner;
  * @create 17.11.2021
  */
 public class UIInterface {
-
-    private AccountRepository accountRepository = AccountRepository.getInstance();
 
     public void run() {
 
@@ -30,7 +28,8 @@ public class UIInterface {
                     InvalidAccountNumber |
                     WrongInputException |
                     AccountNotFoundException |
-                    TransactionNotFoundException exception) {
+                    TransactionNotFoundException |
+                    InvalidTransactionException exception) {
                 System.out.println("Try again: ");
                 run();
             }
@@ -82,11 +81,11 @@ public class UIInterface {
             new WithdrawCommand(accountNumber, Double.parseDouble(moneyString));
         } else if (input.startsWith("execute_transaction ")) {
             String[] arguments = getArguments(input, 3, "Execute transaction command should receive three arguments sender, receiver and money amount");
-            String senderAccount = arguments[0];
+            String senderAccount = arguments[1];
             Verify.verifyAccountNumber(senderAccount);
-            String receiverAccount = arguments[1];
+            String receiverAccount = arguments[2];
             Verify.verifyAccountNumber(receiverAccount);
-            String moneyString = arguments[2];
+            String moneyString = arguments[3];
             Verify.verifyMoney(moneyString);
             new ExecuteTransactionCommand(senderAccount, receiverAccount, Double.parseDouble(moneyString)).execute();
         } else if (input.startsWith("view_account")) {
