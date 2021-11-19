@@ -1,9 +1,13 @@
 package main.upm.simple.banking.ui;
 
 import main.upm.simple.banking.logic.account.*;
+import main.upm.simple.banking.logic.program.ExitCommand;
 import main.upm.simple.banking.logic.program.HelpCommand;
 import main.upm.simple.banking.logic.transaction.ExecuteTransactionCommand;
+import main.upm.simple.banking.logic.transaction.ViewTransactionsCommand;
+import main.upm.simple.banking.persistance.AccountNotFoundException;
 import main.upm.simple.banking.persistance.AccountRepository;
+import main.upm.simple.banking.persistance.TransactionNotFoundException;
 
 import java.util.Scanner;
 
@@ -20,7 +24,16 @@ public class UIInterface {
         while (true) {
             System.out.println("Enter the command: ");
             String input = readAnInput();
-            runTheCommand(input);
+            try {
+                runTheCommand(input);
+            } catch (InvalidMoneyFormat |
+                    InvalidAccountNumber |
+                    WrongInputException |
+                    AccountNotFoundException |
+                    TransactionNotFoundException exception) {
+                System.out.println("Try again: ");
+                run();
+            }
         }
     }
 
@@ -28,6 +41,28 @@ public class UIInterface {
      * Depending on the input should run appropriate command.
      */
     public void runTheCommand(String input) {
+        switch (input) {
+            case "help":
+                new HelpCommand().execute();
+                break;
+            case "exit":
+                new ExitCommand().execute();
+                break;
+            case "list_accounts":
+                new ListAccountsCommand().execute();
+                break;
+            case "list_accountnumbers":
+                new ListAccountNumbersCommand().execute();
+                break;
+            case "add_account":
+                new AddAccountCommand().execute();
+                break;
+            default:
+                runCommandWithArgument(input);
+        }
+    }
+
+    private void runCommandWithArgument(String input) {
         if (input.startsWith("delete_account ")) {
             String accountNumber = getArguments(input, 1, "Delete command should receive one argument in the format of account number")[1];
             new DeleteAccountCommand(accountNumber).execute();
@@ -38,7 +73,7 @@ public class UIInterface {
             String moneyString = arguments[1];
             Verify.verifyMoney(moneyString);
             new AddMoneyCommand(accountNumber, Double.parseDouble(moneyString)).execute();
-        } else if (input.startsWith("withdrawmoney ")) {
+        } else if (input.startsWith("withdraw_money ")) {
             String[] arguments = getArguments(input, 2, "Withdraw money command should receive two arguments account number and amount to withdraw.");
             String accountNumber = arguments[0];
             Verify.verifyAccountNumber(accountNumber);
@@ -60,13 +95,22 @@ public class UIInterface {
             Verify.verifyAccountNumber(accountNumber);
             new ViewAccountCommand(accountNumber).execute();
         } else if (input.startsWith("view_transactions")) {
-            System.out.println("View transactions now!");
             String[] argumentsViewTransactions = getArgumentsViewTransactions(input, "View transactions command should receive one two or no arguments.");
-            if (argumentsViewTransactions.length == 0) {
-
+            ViewTransactionsCommand viewTransactionsCommand = new ViewTransactionsCommand();
+            if (argumentsViewTransactions.length == 1) {
+                viewTransactionsCommand.execute();
+            } else if (argumentsViewTransactions.length == 2) {
+                String accountNumber = argumentsViewTransactions[1];
+                Verify.verifyAccountNumber(accountNumber);
+                viewTransactionsCommand.execute(accountNumber);
+            } else {
+                String argumentsViewTransaction1 = argumentsViewTransactions[1];
+                String argumentsViewTransaction2 = argumentsViewTransactions[2];
+                Verify.verifyAccountNumber(argumentsViewTransaction1);
+                Verify.verifyAccountNumber(argumentsViewTransaction2);
+                viewTransactionsCommand.execute(argumentsViewTransaction1, argumentsViewTransaction2);
             }
         }
-
     }
 
     private String[] getArguments(String input, int expectedNumberOfArguments, String errorMessage) {
@@ -92,6 +136,5 @@ public class UIInterface {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
-
 
 }

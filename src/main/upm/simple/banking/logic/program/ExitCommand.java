@@ -9,8 +9,8 @@ public class ExitCommand {
     /**
      * Exits the program.
      */
-    public String execute() {
-        return null;
+    public void execute() {
+        System.exit(0);
     }
 
 }
