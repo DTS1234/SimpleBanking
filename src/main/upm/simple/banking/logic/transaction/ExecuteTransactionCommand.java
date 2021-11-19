@@ -50,11 +50,11 @@ public class ExecuteTransactionCommand {
         transactionRepo.save(new Transaction(++id, senderAccountNumber, receiverAccountNumber, value));
         updateAccounts(accountRepo, id, sendersAccount, receiversAccount);
 
-        String message = String.format("Successful transaction:\n\t sender before transaction: "
+        String message = String.format("Successful transaction:\n\t sender after transaction: "
                 + sendersAccount.getAccountNumber() + " | " + sendersAccount.getBalance() + " | " + sendersAccount.transactionsString()
-                + "\n\t sender after transaction: " + snapshotSender.getAccountNumber() + " | " + snapshotSender.getBalance() + " | " + snapshotSender.transactionsString()
-                + "\n\t receiver before transaction: " + snapshotReceiver.getAccountNumber() + " | " +  snapshotReceiver.getBalance() + " | " + snapshotReceiver.transactionsString()
-                + "\n\t receiver after transaction: " + receiversAccount.getAccountNumber() + " | " +  receiversAccount.getBalance() + " | " + receiversAccount.transactionsString());
+                + "\n\t sender before transaction: " + snapshotSender.getAccountNumber() + " | " + snapshotSender.getBalance() + " | transactions ids: " + snapshotSender.transactionsString()
+                + "\n\t receiver after transaction: " + receiversAccount.getAccountNumber() + " | " +  receiversAccount.getBalance() + " | transactions ids:" + receiversAccount.transactionsString()
+                + "\n\t receiver before transaction: " + snapshotReceiver.getAccountNumber() + " | " +  snapshotReceiver.getBalance() + " | transactions ids: " + snapshotReceiver.transactionsString());
 
         System.out.println(message);
     }
