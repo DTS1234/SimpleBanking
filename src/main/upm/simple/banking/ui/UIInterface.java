@@ -67,18 +67,18 @@ public class UIInterface {
             new DeleteAccountCommand(accountNumber).execute();
         } else if (input.startsWith("add_money ")) {
             String[] arguments = getArguments(input, 2, "Add money command should receive two arguments account number and amount of money.");
-            String accountNumber = arguments[0];
+            String accountNumber = arguments[1];
             Verify.verifyAccountNumber(accountNumber);
-            String moneyString = arguments[1];
+            String moneyString = arguments[2];
             Verify.verifyMoney(moneyString);
             new AddMoneyCommand(accountNumber, Double.parseDouble(moneyString)).execute();
         } else if (input.startsWith("withdraw_money ")) {
             String[] arguments = getArguments(input, 2, "Withdraw money command should receive two arguments account number and amount to withdraw.");
-            String accountNumber = arguments[0];
+            String accountNumber = arguments[1];
             Verify.verifyAccountNumber(accountNumber);
-            String moneyString = arguments[1];
+            String moneyString = arguments[2];
             Verify.verifyMoney(moneyString);
-            new WithdrawCommand(accountNumber, Double.parseDouble(moneyString));
+            new WithdrawCommand(accountNumber, Double.parseDouble(moneyString)).execute();
         } else if (input.startsWith("execute_transaction ")) {
             String[] arguments = getArguments(input, 3, "Execute transaction command should receive three arguments sender, receiver and money amount");
             String senderAccount = arguments[1];
