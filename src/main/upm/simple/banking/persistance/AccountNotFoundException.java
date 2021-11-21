@@ -6,9 +6,6 @@ package main.upm.simple.banking.persistance;
  */
 public class AccountNotFoundException extends RuntimeException{
 
-    public AccountNotFoundException() {
-    }
-
     public AccountNotFoundException(String message) {
         System.out.println(message);
     }

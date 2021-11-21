@@ -1,7 +1,5 @@
 package main.upm.simple.banking.persistance;
 
-import main.upm.simple.banking.model.Account;
-
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
@@ -24,7 +22,7 @@ public interface Repository<T> {
 
     default void replaceLines(String newLine, String toReplace, String fileName) {
         try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(fileName))) {
-            StringBuffer inputBuffer = new StringBuffer();
+            StringBuilder inputBuffer = new StringBuilder();
             String currentLine;
 
             while ((currentLine = bufferedReader.readLine()) != null) {
@@ -50,7 +48,7 @@ public interface Repository<T> {
 
     default void removeLine(String toRemove, String fileName) {
         try (BufferedReader bufferedReader = Files.newBufferedReader(Path.of(fileName))) {
-            StringBuffer inputBuffer = new StringBuffer();
+            StringBuilder inputBuffer = new StringBuilder();
             String currentLine;
 
             while ((currentLine = bufferedReader.readLine()) != null) {

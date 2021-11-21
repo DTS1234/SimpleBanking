@@ -8,7 +8,7 @@ import main.upm.simple.banking.persistance.AccountRepository;
  */
 public class DeleteAccountCommand {
 
-    private String accountNumber;
+    private final String accountNumber;
 
     public DeleteAccountCommand(String accountNumber) {
         this.accountNumber = accountNumber;

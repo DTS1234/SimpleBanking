@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class AddAccountCommand {
 
-    private AccountRepository accountRepository = AccountRepository.getInstance();
+    private final AccountRepository accountRepository = AccountRepository.getInstance();
 
     /**
      * This command adds a new account to the system. The account numbers start with
@@ -85,8 +85,7 @@ public class AddAccountCommand {
         }
 
         String number = lastAccountNumber.substring(firstNumberOccurrenceInAccountString);
-        int numberToIncrease = Integer.parseInt(number);
-        return numberToIncrease;
+        return Integer.parseInt(number);
     }
 
 

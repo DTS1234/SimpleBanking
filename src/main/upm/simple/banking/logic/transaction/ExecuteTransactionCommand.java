@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class ExecuteTransactionCommand {
 
-    private String senderAccountNumber;
-    private String receiverAccountNumber;
-    private double value;
+    private final String senderAccountNumber;
+    private final String receiverAccountNumber;
+    private final double value;
 
     public ExecuteTransactionCommand(String senderAccountNumber, String receiverAccountNumber, double value) {
         this.senderAccountNumber = senderAccountNumber;
@@ -50,11 +50,11 @@ public class ExecuteTransactionCommand {
         transactionRepo.save(new Transaction(++id, senderAccountNumber, receiverAccountNumber, value));
         updateAccounts(accountRepo, id, sendersAccount, receiversAccount);
 
-        String message = String.format("Successful transaction:\n\t sender after transaction: "
-                + sendersAccount.getAccountNumber() + " | " + sendersAccount.getBalance() + " | transactions ids: " + sendersAccount.transactionsString()
-                + "\n\t sender before transaction: " + snapshotSender.getAccountNumber() + " | " + snapshotSender.getBalance() + " | transactions ids: " + snapshotSender.transactionsString()
-                + "\n\t receiver after transaction: " + receiversAccount.getAccountNumber() + " | " +  receiversAccount.getBalance() + " | transactions ids:" + receiversAccount.transactionsString()
-                + "\n\t receiver before transaction: " + snapshotReceiver.getAccountNumber() + " | " +  snapshotReceiver.getBalance() + " | transactions ids: " + snapshotReceiver.transactionsString());
+        String message = ("Successful transaction:"
+                + String.format("%n\t sender after transaction: %s | %.2f | %s", sendersAccount.getAccountNumber(), sendersAccount.getBalance(), " | transactions ids: " + sendersAccount.transactionsString())
+                + String.format("%n\t sender before transaction: %s | %.2f | %s", snapshotSender.getAccountNumber(), snapshotSender.getBalance(), " | transactions ids: " + snapshotSender.transactionsString())
+                + String.format("%n\t receiver after transaction: %s | %.2f | %s", receiversAccount.getAccountNumber(), receiversAccount.getBalance(), " | transactions ids:" + receiversAccount.transactionsString())
+                + String.format("%n\t receiver before transaction: %s | %.2f | %s", snapshotReceiver.getAccountNumber(), snapshotReceiver.getBalance()," | transactions ids: " + snapshotReceiver.transactionsString()));
 
         System.out.println(message);
     }

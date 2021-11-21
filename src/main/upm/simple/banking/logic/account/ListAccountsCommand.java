@@ -15,7 +15,7 @@ public class ListAccountsCommand {
     public void execute() {
         AccountRepository.getInstance().findAll().forEach(
                 account -> {
-                    String format = String.format("account number: %s | balance: %s | transactions : %s", account.getAccountNumber(), String.valueOf(account.getBalance()), account.getTransactionIds().isEmpty() ? "empty" : account.transactionsString());
+                    String format = String.format("account number: %s | balance: %s | transactions : %s", account.getAccountNumber(), account.getBalance(), account.getTransactionIds().isEmpty() ? "empty" : account.transactionsString());
                     System.out.println(format);
                 }
         );

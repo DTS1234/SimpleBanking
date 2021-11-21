@@ -9,7 +9,7 @@ import main.upm.simple.banking.persistance.AccountRepository;
  */
 public class AddMoneyCommand {
 
-    private AccountRepository accountRepository = AccountRepository.getInstance();
+    private final AccountRepository accountRepository = AccountRepository.getInstance();
     private final String accountNumber;
     private final double value;
 
@@ -29,7 +29,7 @@ public class AddMoneyCommand {
         double newBalance = currentBalance + value;
         selectedAccount.setBalance(newBalance);
 
-        Account newAccountInfo = accountRepository.save(selectedAccount);
+        accountRepository.save(selectedAccount);
 
         String message = String.format("The addition to the account was successful, \n" +
                 "\tPrevious balance : %.2f\n" +

@@ -30,6 +30,7 @@ public class UIInterface {
                     AccountNotFoundException |
                     TransactionNotFoundException |
                     InvalidTransactionException exception) {
+
                 System.out.println("Try again !");
                 run();
             }
@@ -109,6 +110,8 @@ public class UIInterface {
                 Verify.verifyAccountNumber(argumentsViewTransaction2);
                 viewTransactionsCommand.execute(argumentsViewTransaction1, argumentsViewTransaction2);
             }
+        } else {
+            System.out.println("Input entered is not recognized as a command, enter 'help' to display possible options.");
         }
     }
 

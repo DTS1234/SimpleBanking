@@ -9,7 +9,7 @@ import main.upm.simple.banking.persistance.AccountRepository;
  */
 public class ViewAccountCommand {
 
-    private String accountNumber;
+    private final String accountNumber;
 
     public ViewAccountCommand(String accountNumber) {
         this.accountNumber = accountNumber;

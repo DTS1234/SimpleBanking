@@ -9,7 +9,7 @@ import main.upm.simple.banking.persistance.AccountRepository;
  */
 public class WithdrawCommand {
 
-    private AccountRepository accountRepository = AccountRepository.getInstance();
+    private final AccountRepository accountRepository = AccountRepository.getInstance();
     private final String accountNumber;
     private final double value;
 
@@ -30,7 +30,7 @@ public class WithdrawCommand {
 
         if(newBalance>=0){
             selectedAccount.setBalance(newBalance);
-            Account newAccountInfo = accountRepository.save(selectedAccount);
+            accountRepository.save(selectedAccount);
             String message = String.format("The withdrawal from the account was successful, \n" +
                     "\tPrevious balance : %.2f\n" +
                     "\tNew balance : %.2f", currentBalance, newBalance);
@@ -39,7 +39,6 @@ public class WithdrawCommand {
         }
         else{
             System.out.println("Not enough balance on the account!");
-            return;
         }
 
     }
