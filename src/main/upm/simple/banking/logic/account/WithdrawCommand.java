@@ -27,15 +27,21 @@ public class WithdrawCommand {
         Account selectedAccount = accountRepository.findById(accountNumber);
         double currentBalance = selectedAccount.getBalance();
         double newBalance = currentBalance - value;
-        selectedAccount.setBalance(newBalance);
 
-        Account newAccountInfo = accountRepository.save(selectedAccount);
+        if(newBalance>=0){
+            selectedAccount.setBalance(newBalance);
+            Account newAccountInfo = accountRepository.save(selectedAccount);
+            String message = String.format("The withdrawal from the account was successful, \n" +
+                    "\tPrevious balance : %.2f\n" +
+                    "\tNew balance : %.2f", currentBalance, newBalance);
 
-        String message = String.format("The withdrawal from the account was successful, \n" +
-                "\tPrevious balance : %.2f\n" +
-                "\tNew balance : %.2f", currentBalance, newBalance);
+            System.out.println(message);
+        }
+        else{
+            System.out.println("Not enough balance on the account!");
+            return;
+        }
 
-        System.out.println(message);
     }
 
 }
