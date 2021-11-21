@@ -51,7 +51,7 @@ public class ExecuteTransactionCommand {
         updateAccounts(accountRepo, id, sendersAccount, receiversAccount);
 
         String message = String.format("Successful transaction:\n\t sender after transaction: "
-                + sendersAccount.getAccountNumber() + " | " + sendersAccount.getBalance() + " | " + sendersAccount.transactionsString()
+                + sendersAccount.getAccountNumber() + " | " + sendersAccount.getBalance() + " | transactions ids: " + sendersAccount.transactionsString()
                 + "\n\t sender before transaction: " + snapshotSender.getAccountNumber() + " | " + snapshotSender.getBalance() + " | transactions ids: " + snapshotSender.transactionsString()
                 + "\n\t receiver after transaction: " + receiversAccount.getAccountNumber() + " | " +  receiversAccount.getBalance() + " | transactions ids:" + receiversAccount.transactionsString()
                 + "\n\t receiver before transaction: " + snapshotReceiver.getAccountNumber() + " | " +  snapshotReceiver.getBalance() + " | transactions ids: " + snapshotReceiver.transactionsString());

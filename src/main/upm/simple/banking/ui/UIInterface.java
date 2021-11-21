@@ -30,7 +30,7 @@ public class UIInterface {
                     AccountNotFoundException |
                     TransactionNotFoundException |
                     InvalidTransactionException exception) {
-                System.out.println("Try again: ");
+                System.out.println("Try again !");
                 run();
             }
         }
@@ -122,7 +122,7 @@ public class UIInterface {
 
     private String[] getArgumentsViewTransactions(String input, String errorMessage) {
         String[] s = input.split(" ");
-        if (s.length + 1 < 0 || s.length + 1 > 3) {
+        if (s.length > 3) {
             throw new WrongInputException(errorMessage);
         }
         return s;
