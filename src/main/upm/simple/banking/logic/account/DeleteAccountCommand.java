@@ -1,5 +1,7 @@
 package main.upm.simple.banking.logic.account;
 
+import main.upm.simple.banking.persistance.AccountRepository;
+
 /**
  * @author akazmierczak
  * @create 14.11.2021
@@ -17,7 +19,8 @@ public class DeleteAccountCommand {
      * notifies the user with a message, that the deletion process has been completed.
      */
     public void execute() {
-
+        AccountRepository.getInstance().deleteById(accountNumber);
+        System.out.println("Account with the number " + accountNumber + " has been deleted successfully.");
     }
 
     public String getAccountNumber() {
