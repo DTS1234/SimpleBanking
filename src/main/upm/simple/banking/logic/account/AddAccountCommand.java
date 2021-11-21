@@ -25,7 +25,7 @@ public class AddAccountCommand {
         List<Account> currentAccounts = accountRepository.findAll();
 
         Account account;
-        if (currentAccounts == null || currentAccounts.isEmpty()) {
+        if (currentAccounts.isEmpty()) {
             account = new Account("000000", 0, new ArrayList<>());
             accountRepository.save(account);
         } else {

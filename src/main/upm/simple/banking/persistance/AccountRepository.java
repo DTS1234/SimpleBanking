@@ -116,6 +116,7 @@ public class AccountRepository implements Repository<Account> {
                 }
                 return findAll();
             }
+
             ioException.printStackTrace();
 
         }
