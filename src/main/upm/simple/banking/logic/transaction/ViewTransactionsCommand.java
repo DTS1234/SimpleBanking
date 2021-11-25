@@ -25,7 +25,7 @@ public class ViewTransactionsCommand {
         System.out.println("Transactions: ");
 
         if (transactions.isEmpty()) {
-            System.out.println("EMPTY");
+            System.out.print("EMPTY");
         } else {
             printTransactions(transactions);
         }

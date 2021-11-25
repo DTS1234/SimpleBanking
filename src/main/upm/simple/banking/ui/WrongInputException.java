@@ -6,5 +6,7 @@ package main.upm.simple.banking.ui;
  */
 public class WrongInputException extends RuntimeException {
     public WrongInputException(String s) {
+        super(s);
+        System.out.println(s);
     }
 }

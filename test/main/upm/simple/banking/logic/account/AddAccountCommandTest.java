@@ -4,6 +4,7 @@ import jdk.jfr.Description;
 import main.upm.simple.banking.TestUtil;
 import main.upm.simple.banking.model.Account;
 import main.upm.simple.banking.persistance.AccountRepository;
+import main.upm.simple.banking.ui.UIInterface;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class AddAccountCommandTest {
 
-    private AddAccountCommand subject;
     private AccountRepository accountRepository;
+    private UIInterface actual;
 
     @BeforeAll
     static void beforeAll() {
@@ -29,8 +30,8 @@ class AddAccountCommandTest {
 
     @BeforeEach
     void setUp() {
+        actual = new UIInterface();
         accountRepository = AccountRepository.getInstance();
-        subject = new AddAccountCommand();
     }
 
     @AfterEach
@@ -42,7 +43,7 @@ class AddAccountCommandTest {
     @Description("Should create account with 000000 when no accounts file exist.")
     void t1() {
         //when
-        subject.execute();
+        actual.runTheCommand("add_account");
         //then
         Account actual = accountRepository.findById("000000");
         assertEquals("000000", actual.getAccountNumber());
@@ -59,7 +60,7 @@ class AddAccountCommandTest {
         accountRepository.save(new Account("000004", 2, Collections.emptyList()));
         accountRepository.save(new Account("000007", 2, Collections.emptyList()));
         //when
-        subject.execute();
+        actual.runTheCommand("add_account");
         //then
         Account byId = AccountRepository.getInstance().findById("000008");
         assertEquals("000008", byId.getAccountNumber());
@@ -72,7 +73,7 @@ class AddAccountCommandTest {
         accountRepository.save(new Account("000000", 1, Collections.emptyList()));
         accountRepository.deleteById("000000");
         //when
-        subject.execute();
+        actual.runTheCommand("add_account");
         //then
         Account actual = accountRepository.findById("000000");
         assertEquals("000000", actual.getAccountNumber());
@@ -86,7 +87,7 @@ class AddAccountCommandTest {
         // given
         accountRepository.save(new Account("099999", 1, Collections.emptyList()));
         //when
-        subject.execute();
+        actual.runTheCommand("add_account");
         //then
         Account actual = accountRepository.findById("100000");
         assertEquals("100000", actual.getAccountNumber());
@@ -100,7 +101,7 @@ class AddAccountCommandTest {
         // given
         accountRepository.save(new Account("0", 1, Collections.emptyList()));
         //when
-        subject.execute();
+        actual.runTheCommand("add_account");
         //then
         Account actual = accountRepository.findById("000001");
         assertEquals("000001", actual.getAccountNumber());
