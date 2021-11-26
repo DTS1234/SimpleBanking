@@ -63,10 +63,11 @@ class ViewTransactionsCommandTest {
         subject.runTheCommand("view_transactions");
         // then
         String whatShouldBePrinted = "Transactions: \n" +
-                "\t sender's account : 000000, receiver's account : 000001, amount: 10,00\n" +
-                "\t sender's account : 000001, receiver's account : 000003, amount: 10,00\n" +
-                "\t sender's account : 000002, receiver's account : 000004, amount: 10,00\n" +
-                "\t sender's account : 000002, receiver's account : 000000, amount: 10,00";
+                "Sender         Receiver       Amount         \n" +
+                "000000         000001         10.0           \n" +
+                "000001         000003         10.0           \n" +
+                "000002         000004         10.0           \n" +
+                "000002         000000         10.0";
         final String whatWasPrinted = outputStreamCaptor.toString();
 
         Assertions.assertEquals(omitLineSeparator(whatShouldBePrinted), omitLineSeparator(whatWasPrinted));
@@ -86,8 +87,9 @@ class ViewTransactionsCommandTest {
 
         // then
         String whatShouldBePrinted = "Transactions: \n" +
-                "\t sender's account : 000000, receiver's account : 000001, amount: 10,00\n" +
-                "\t sender's account : 000002, receiver's account : 000000, amount: 10,00";
+                "Sender         Receiver       Amount         \n" +
+                "000000         000001         10.0           \n" +
+                "000002         000000         10.0";
         final String whatWasPrinted = outputStreamCaptor.toString();
 
         Assertions.assertEquals(omitLineSeparator(whatShouldBePrinted), omitLineSeparator(whatWasPrinted));
@@ -107,7 +109,8 @@ class ViewTransactionsCommandTest {
 
         // then
         String whatShouldBePrinted = "Transactions: \n" +
-                "\t sender's account : 000001, receiver's account : 000003, amount: 10,00\n";
+                "Sender         Receiver       Amount         \n" +
+                "000001         000003         10.0           \n";
         final String whatWasPrinted = outputStreamCaptor.toString();
 
         Assertions.assertEquals(omitLineSeparator(whatShouldBePrinted), omitLineSeparator(whatWasPrinted));
@@ -126,7 +129,7 @@ class ViewTransactionsCommandTest {
     }
 
     private String omitLineSeparator(String yourString) {
-        return yourString.replaceAll("\n", "").replaceAll("\r", "");
+        return yourString.replaceAll("\n", "").replaceAll("\r", "").replaceAll("\t", "").trim();
     }
 
 }

@@ -35,10 +35,11 @@ public class ViewTransactionsCommand {
     // TODO add table formatting
     private void printTransactionsTable(List<Transaction> all) {
 
-        System.out.println("Sender's account | Receiver's account | Amount");
+
+        System.out.format("%-15s%-15s%-15s%n", new Object[] {"Sender", "Receiver",  "Amount"});
 
         all.forEach(transaction -> {
-            System.out.println(transaction.getSenderAccountNumber() + " | " + transaction.getReceiverAccountNumber() + " | " + transaction.getAmount() );
+            System.out.format("%-15s%-15s%-15s%n", new String[] {transaction.getSenderAccountNumber(), transaction.getReceiverAccountNumber(), String.valueOf(transaction.getAmount())});
         });
     }
 
