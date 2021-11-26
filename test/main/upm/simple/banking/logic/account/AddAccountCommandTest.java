@@ -4,12 +4,13 @@ import jdk.jfr.Description;
 import main.upm.simple.banking.TestUtil;
 import main.upm.simple.banking.model.Account;
 import main.upm.simple.banking.persistance.AccountRepository;
+import main.upm.simple.banking.persistance.TransactionRepository;
 import main.upm.simple.banking.ui.UIInterface;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import main.upm.simple.banking.ui.WrongInputException;
+import org.junit.jupiter.api.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,6 +24,9 @@ class AddAccountCommandTest {
     private AccountRepository accountRepository;
     private UIInterface actual;
 
+    private TransactionRepository transactionRepository;
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+
     @BeforeAll
     static void beforeAll() {
         TestUtil.deleteFiles();
@@ -31,6 +35,7 @@ class AddAccountCommandTest {
     @BeforeEach
     void setUp() {
         actual = new UIInterface();
+        System.setOut(new PrintStream(outputStreamCaptor));
         accountRepository = AccountRepository.getInstance();
     }
 
@@ -82,31 +87,14 @@ class AddAccountCommandTest {
     }
 
     @Test
-    @Description("Should create account with 100000 when the last account was 099999")
+    @Description("Should throw an error when wrong input for add_account")
     void t4() {
-        // given
-        accountRepository.save(new Account("099999", 1, Collections.emptyList()));
-        //when
-        actual.runTheCommand("add_account");
-        //then
-        Account actual = accountRepository.findById("100000");
-        assertEquals("100000", actual.getAccountNumber());
-        assertEquals(0, actual.getBalance());
-        assertEquals(Collections.emptyList(), actual.getTransactionIds());
-    }
-
-    @Test
-    @Description("Should add the zeroes if string passed does not contain 6 digits")
-    void t5() {
-        // given
-        accountRepository.save(new Account("0", 1, Collections.emptyList()));
-        //when
-        actual.runTheCommand("add_account");
-        //then
-        Account actual = accountRepository.findById("000001");
-        assertEquals("000001", actual.getAccountNumber());
-        assertEquals(0, actual.getBalance());
-        assertEquals(Collections.emptyList(), actual.getTransactionIds());
+        // when
+        actual.runTheCommand("add_acount");
+        // then
+        String whatShouldBePrinted = "Input entered is not recognized as a command, enter 'help' to display possible options.\n";
+        final String whatWasPrinted = outputStreamCaptor.toString().replaceAll("\r", "");
+        assertEquals(whatWasPrinted, whatShouldBePrinted);
     }
 
 }

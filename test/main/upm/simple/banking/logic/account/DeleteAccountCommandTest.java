@@ -11,10 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author akazmierczak
@@ -43,10 +41,10 @@ class DeleteAccountCommandTest {
     @Test
     @Description("Should throw an error about to many arguments")
     void t8() {
-        final WrongInputException wrongInputException = Assertions.assertThrows(
+        final WrongInputException wrongInputException = assertThrows(
                 WrongInputException.class,
                 // when
-                () -> new UIInterface().runTheCommand("delete_account 000000 000000"));
+                () -> new UIInterface().runTheCommand("delete_account 000000 14.45"));
 
         Assertions.assertEquals("Delete command should receive one argument in the format of account number", wrongInputException.getMessage());
     }
@@ -54,6 +52,6 @@ class DeleteAccountCommandTest {
     @Test
     @Description("Should throw an error about invalid account format")
     void t9() {
-        Assertions.assertThrows(InvalidAccountNumber.class, () -> new UIInterface().runTheCommand("delete_account wrong11"));
+        assertThrows(InvalidAccountNumber.class, () -> new UIInterface().runTheCommand("delete_account wrong11"));
     }
 }

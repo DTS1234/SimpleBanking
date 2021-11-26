@@ -27,20 +27,18 @@ public class ViewTransactionsCommand {
         if (transactions.isEmpty()) {
             System.out.print("EMPTY");
         } else {
-            printTransactions(transactions);
+            printTransactionsTable(transactions);
         }
 
     }
 
-    private void printTransactions(List<Transaction> all) {
+    // TODO add table formatting
+    private void printTransactionsTable(List<Transaction> all) {
+
+        System.out.println("Sender's account | Receiver's account | Amount");
+
         all.forEach(transaction -> {
-
-            String message = String.format("\t sender's account : %s, receiver's account : %s, amount: %.2f",
-                    transaction.getSenderAccountNumber(),
-                    transaction.getReceiverAccountNumber(),
-                    transaction.getAmount());
-            System.out.println(message);
-
+            System.out.println(transaction.getSenderAccountNumber() + " | " + transaction.getReceiverAccountNumber() + " | " + transaction.getAmount() );
         });
     }
 
@@ -59,7 +57,7 @@ public class ViewTransactionsCommand {
         if (transactions.isEmpty()) {
             System.out.println("No transactions connected to that account.");
         } else {
-            printTransactions(transactions);
+            printTransactionsTable(transactions);
         }
 
     }
@@ -83,7 +81,7 @@ public class ViewTransactionsCommand {
         if (transactions.isEmpty()) {
             System.out.println("No transactions connected to those accounts.");
         } else {
-            printTransactions(transactions);
+            printTransactionsTable(transactions);
         }
 
     }

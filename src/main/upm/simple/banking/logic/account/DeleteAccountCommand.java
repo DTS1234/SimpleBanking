@@ -23,7 +23,4 @@ public class DeleteAccountCommand {
         System.out.println("Account with the number " + accountNumber + " has been deleted successfully.");
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
-    }
 }
