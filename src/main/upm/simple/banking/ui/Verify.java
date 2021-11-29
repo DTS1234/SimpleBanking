@@ -1,5 +1,7 @@
 package main.upm.simple.banking.ui;
 
+import main.upm.simple.banking.persistance.AccountRepository;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,12 +30,16 @@ public class Verify {
     }
 
     public static void verifyAccountNumber(String accountNumber) {
+
         if (accountNumber.length() != 6) {
             throw new InvalidAccountNumber(accountNumber);
         }
+
         if (!onlyDigits(accountNumber)) {
             throw new InvalidAccountNumber(accountNumber);
         }
+        AccountRepository.getInstance().findById(accountNumber);
+
     }
 
 }

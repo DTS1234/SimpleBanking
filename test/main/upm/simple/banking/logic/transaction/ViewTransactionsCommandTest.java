@@ -2,8 +2,10 @@ package main.upm.simple.banking.logic.transaction;
 
 import jdk.jfr.Description;
 import main.upm.simple.banking.TestUtil;
+import main.upm.simple.banking.model.Account;
 import main.upm.simple.banking.model.Transaction;
 import main.upm.simple.banking.persistance.AccountNotFoundException;
+import main.upm.simple.banking.persistance.AccountRepository;
 import main.upm.simple.banking.persistance.TransactionRepository;
 import main.upm.simple.banking.ui.UIInterface;
 import org.junit.jupiter.api.Assertions;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -77,6 +80,7 @@ class ViewTransactionsCommandTest {
     @Description("Should return transactions only for account passed.")
     void t12() {
         // given
+        AccountRepository.getInstance().save(new Account("000000", 10, Collections.emptyList()));
         transactionRepository.save(new Transaction(1L, "000000", "000001", 10));
         transactionRepository.save(new Transaction(2L, "000001", "000003", 10));
         transactionRepository.save(new Transaction(3L, "000002", "000004", 10));
@@ -99,6 +103,9 @@ class ViewTransactionsCommandTest {
     @Description("Should return transactions only for account passed.")
     void t13() {
         // given
+        AccountRepository.getInstance().save(new Account("000001", 10, Collections.emptyList()));
+        AccountRepository.getInstance().save(new Account("000003", 10, Collections.emptyList()));
+
         transactionRepository.save(new Transaction(1L, "000000", "000001", 10));
         transactionRepository.save(new Transaction(2L, "000001", "000003", 10));
         transactionRepository.save(new Transaction(3L, "000002", "000004", 10));

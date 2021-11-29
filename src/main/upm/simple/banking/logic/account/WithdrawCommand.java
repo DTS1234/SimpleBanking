@@ -1,7 +1,9 @@
 package main.upm.simple.banking.logic.account;
 
+import main.upm.simple.banking.logic.transaction.InvalidTransactionException;
 import main.upm.simple.banking.model.Account;
 import main.upm.simple.banking.persistance.AccountRepository;
+import main.upm.simple.banking.persistance.TransactionNotFoundException;
 
 /**
  * @author akazmierczak
@@ -27,6 +29,11 @@ public class WithdrawCommand {
         Account selectedAccount = accountRepository.findById(accountNumber);
         double currentBalance = selectedAccount.getBalance();
         double newBalance = currentBalance - value;
+
+        if (newBalance < 0) {
+            throw new InvalidTransactionException("Invalid transaction: you cannot exceed the balance");
+        }
+
         selectedAccount.setBalance(newBalance);
 
         Account newAccountInfo = accountRepository.save(selectedAccount);

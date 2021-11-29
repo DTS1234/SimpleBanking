@@ -65,6 +65,7 @@ public class UIInterface {
     private void runCommandWithArgument(String input) {
         if (input.startsWith("delete_account ")) {
             String accountNumber = getArguments(input, 1, "Delete command should receive one argument in the format of account number")[1];
+            Verify.verifyAccountNumber(accountNumber);
             new DeleteAccountCommand(accountNumber).execute();
         } else if (input.startsWith("add_money ")) {
             String[] arguments = getArguments(input, 2, "Add money command should receive two arguments account number and amount of money.");

@@ -22,9 +22,8 @@ public class ViewTransactionsCommand {
 
         List<Transaction> transactions = transactionRepository.findAll();
 
-        System.out.println("Transactions: ");
-
         if (transactions.isEmpty()) {
+            System.out.println("Transactions: ");
             System.out.print("EMPTY");
         } else {
             printTransactionsTable(transactions);
@@ -32,14 +31,13 @@ public class ViewTransactionsCommand {
 
     }
 
-    // TODO add table formatting
     private void printTransactionsTable(List<Transaction> all) {
 
-
-        System.out.format("%-15s%-15s%-15s%n", new Object[] {"Sender", "Receiver",  "Amount"});
+        System.out.println("Transactions: ");
+        System.out.format("%-15s%-15s%-15s%n", "Sender", "Receiver", "Amount");
 
         all.forEach(transaction -> {
-            System.out.format("%-15s%-15s%-15s%n", new String[] {transaction.getSenderAccountNumber(), transaction.getReceiverAccountNumber(), String.valueOf(transaction.getAmount())});
+            System.out.format("%-15s%-15s%-15s%n", transaction.getSenderAccountNumber(), transaction.getReceiverAccountNumber(), String.valueOf(transaction.getAmount()));
         });
     }
 
@@ -48,7 +46,6 @@ public class ViewTransactionsCommand {
      * amount as columns for account with a given accountNumber.
      */
     public void execute(String accountNumber) {
-
 
         List<Transaction> transactions = transactionRepository.findAll()
                 .stream()
