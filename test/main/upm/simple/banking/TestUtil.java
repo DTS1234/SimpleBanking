@@ -16,4 +16,7 @@ public class TestUtil {
     }
 
 
+    public static String omitLineSeparator(String yourString) {
+        return yourString.replaceAll("\n", "").replaceAll("\r", "").replaceAll("\t", "").trim();
+    }
 }

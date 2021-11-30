@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author akazmierczak
@@ -51,7 +51,7 @@ class ViewTransactionsCommandTest {
         final String whatWasPrinted = outputStreamCaptor.toString();
         String whatShouldBePrinted = "Transactions: \n" +
                 "EMPTY";
-        Assertions.assertEquals(omitLineSeparator(whatShouldBePrinted), omitLineSeparator(whatWasPrinted));
+        Assertions.assertEquals(TestUtil.omitLineSeparator(whatShouldBePrinted), TestUtil.omitLineSeparator(whatWasPrinted));
     }
 
     @Test
@@ -73,7 +73,7 @@ class ViewTransactionsCommandTest {
                 "000002         000000         10.0";
         final String whatWasPrinted = outputStreamCaptor.toString();
 
-        Assertions.assertEquals(omitLineSeparator(whatShouldBePrinted), omitLineSeparator(whatWasPrinted));
+        Assertions.assertEquals(TestUtil.omitLineSeparator(whatShouldBePrinted), TestUtil.omitLineSeparator(whatWasPrinted));
     }
 
     @Test
@@ -96,7 +96,7 @@ class ViewTransactionsCommandTest {
                 "000002         000000         10.0";
         final String whatWasPrinted = outputStreamCaptor.toString();
 
-        Assertions.assertEquals(omitLineSeparator(whatShouldBePrinted), omitLineSeparator(whatWasPrinted));
+        Assertions.assertEquals(TestUtil.omitLineSeparator(whatShouldBePrinted), TestUtil.omitLineSeparator(whatWasPrinted));
     }
 
     @Test
@@ -120,7 +120,7 @@ class ViewTransactionsCommandTest {
                 "000001         000003         10.0           \n";
         final String whatWasPrinted = outputStreamCaptor.toString();
 
-        Assertions.assertEquals(omitLineSeparator(whatShouldBePrinted), omitLineSeparator(whatWasPrinted));
+        Assertions.assertEquals(TestUtil.omitLineSeparator(whatShouldBePrinted), TestUtil.omitLineSeparator(whatWasPrinted));
     }
 
     @Test
@@ -135,8 +135,16 @@ class ViewTransactionsCommandTest {
         assertThrows(AccountNotFoundException.class, () -> subject.runTheCommand("view_transactions 000000 000099"));
     }
 
-    private String omitLineSeparator(String yourString) {
-        return yourString.replaceAll("\n", "").replaceAll("\r", "").replaceAll("\t", "").trim();
+    @Test
+    @Description("Should print a message when there are no transactions.")
+    void t22() {
+        AccountRepository.getInstance().save(new Account("000000", 10, Collections.emptyList()));
+        // when
+        subject.runTheCommand("view_transactions 000000");
+        // then
+        final String whatWasPrinted = outputStreamCaptor.toString();
+        final String whatShouldBesPrinted = "No transactions connected to that account.\r\n";
+        assertEquals(whatShouldBesPrinted, whatWasPrinted);
     }
 
 }
