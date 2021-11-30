@@ -23,7 +23,7 @@ public class ViewAccountCommand {
         Account byId = AccountRepository.getInstance().findById(accountNumber);
         System.out.println("Account :");
         System.out.println("\t account number : " + byId.getAccountNumber());
-        System.out.println("\t balance : " + byId.getBalance());
+        System.out.println(String.format("\t balance : %.2f", byId.getBalance()));
     }
 
 }

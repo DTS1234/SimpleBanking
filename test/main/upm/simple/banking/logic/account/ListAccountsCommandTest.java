@@ -45,9 +45,9 @@ class ListAccountsCommandTest {
         // then
         final String whatWasPrinted = outputStreamCaptor.toString();
         final String whatShouldBePrinted =
-                "account number: 000000 | balance: 0.0 | transactions : empty\n" +
-                        "account number: 000001 | balance: 0.0 | transactions : empty\n" +
-                        "account number: 000002 | balance: 0.0 | transactions : empty";
+                "account number: 000000 | balance: 0.0\n" +
+                        "account number: 000001 | balance: 0.0\n" +
+                        "account number: 000002 | balance: 0.0";
 
         Assertions.assertTrue(TestUtil.omitLineSeparator(whatWasPrinted)
                 .endsWith(TestUtil.omitLineSeparator(whatShouldBePrinted)));
@@ -59,8 +59,7 @@ class ListAccountsCommandTest {
         subject.execute();
         // then
         final String whatWasPrinted = outputStreamCaptor.toString();
-        final String whatShouldBePrinted = "Accounts :\n" +
-                "\t EMPTY";
+        final String whatShouldBePrinted = "There are no existing accounts";
         Assertions.assertTrue(TestUtil.omitLineSeparator(whatWasPrinted).endsWith(
                 TestUtil.omitLineSeparator(whatShouldBePrinted)));
     }

@@ -3,6 +3,9 @@ package main.upm.simple.banking.logic.account;
 import main.upm.simple.banking.model.Account;
 import main.upm.simple.banking.persistance.AccountRepository;
 
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * @author akazmierczak
  * @create 14.11.2021
@@ -13,15 +16,20 @@ public class ListAccountNumbersCommand {
      * This command displays a list of all accounts sorted descending by account number.
      */
     public void execute() {
+        final List<Account> all = AccountRepository.getInstance().findAll();
 
-        System.out.println("Account numbers: ");
+        if (all.isEmpty()) {
+            System.out.println("There are no existing accounts");
+        } else {
+            System.out.println("Account numbers: ");
 
-        AccountRepository.getInstance().findAll()
-                .stream()
-                .map(Account::getAccountNumber)
-                .forEach(
-                        accountNumber -> System.out.println("\t" + accountNumber)
-                );
+            all.stream()
+                    .sorted(Comparator.comparing(Account::getAccountNumber).reversed())
+                    .map(Account::getAccountNumber)
+                    .forEach(
+                            accountNumber -> System.out.println("\t" + accountNumber)
+                    );
+        }
     }
 
 }

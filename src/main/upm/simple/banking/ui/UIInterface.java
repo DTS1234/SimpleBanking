@@ -92,7 +92,7 @@ public class UIInterface {
             new ExecuteTransactionCommand(senderAccount, receiverAccount, Double.parseDouble(moneyString)).execute();
         } else if (input.startsWith("view_account")) {
             String[] arguments = getArguments(input, 1, "View account method should receive one argument with account number");
-            String accountNumber = arguments[0];
+            String accountNumber = arguments[1];
             Verify.verifyAccountNumber(accountNumber);
             new ViewAccountCommand(accountNumber).execute();
         } else if (input.startsWith("view_transactions")) {

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Collections;
 
 /**
@@ -24,8 +25,10 @@ class ViewAccountCommandTest {
 
     @BeforeEach
     void setUp() {
+        TestUtil.deleteFiles();
         subject = new UIInterface();
         accountRepository = AccountRepository.getInstance();
+        System.setOut(new PrintStream(outputStreamCaptor));
     }
 
     @Test
@@ -36,8 +39,8 @@ class ViewAccountCommandTest {
         subject.runTheCommand("view_account 000000");
         // then
         String whatWasPrinted = outputStreamCaptor.toString();
-        String whatShouldBePrinted = "Account : \n\taccount number : 000000\n\tbalance : 1,0" ;
-        Assertions.assertEquals(whatWasPrinted, whatShouldBePrinted);
+        String whatShouldBePrinted = "Account : \n\taccount number : 000000\n\t balance : 1,00" ;
+        Assertions.assertEquals(TestUtil.omitLineSeparator(whatWasPrinted), TestUtil.omitLineSeparator(whatShouldBePrinted));
     }
 
     @Test

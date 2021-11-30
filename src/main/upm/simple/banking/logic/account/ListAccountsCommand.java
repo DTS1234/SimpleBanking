@@ -1,6 +1,9 @@
 package main.upm.simple.banking.logic.account;
 
+import main.upm.simple.banking.model.Account;
 import main.upm.simple.banking.persistance.AccountRepository;
+
+import java.util.List;
 
 /**
  * @author akazmierczak
@@ -13,12 +16,18 @@ public class ListAccountsCommand {
      * balance.
      */
     public void execute() {
-        AccountRepository.getInstance().findAll().forEach(
-                account -> {
-                    String format = String.format("account number: %s | balance: %s | transactions : %s", account.getAccountNumber(), account.getBalance(), account.getTransactionIds().isEmpty() ? "empty" : account.transactionsString());
-                    System.out.println(format);
-                }
-        );
-    }
+        final List<Account> all = AccountRepository.getInstance().findAll();
 
+        if (all.isEmpty()) {
+            System.out.println("There are no existing accounts");
+        } else {
+            System.out.println("Account numbers: ");
+            all.forEach(
+                    account -> {
+                        String format = String.format("account number: %s | balance: %s", account.getAccountNumber(), account.getBalance());
+                        System.out.println(format);
+                    }
+            );
+        }
+    }
 }
