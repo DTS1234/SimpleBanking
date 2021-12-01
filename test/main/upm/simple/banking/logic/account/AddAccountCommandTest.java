@@ -14,6 +14,7 @@ import java.io.PrintStream;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author akazmierczak
@@ -46,7 +47,7 @@ class AddAccountCommandTest {
 
     @Test
     @Description("Should create account with 000000 when no accounts file exist.")
-    void t1() {
+    void t1() throws Exception {
         //when
         actual.runTheCommand("add_account");
         //then
@@ -58,7 +59,7 @@ class AddAccountCommandTest {
 
     @Test
     @Description("Should create account with account number properly adjusted.")
-    void t2() {
+    void t2() throws Exception {
         //given
         accountRepository.save(new Account("000000", 2, Collections.emptyList()));
         accountRepository.save(new Account("000001", 2, Collections.emptyList()));
@@ -73,7 +74,7 @@ class AddAccountCommandTest {
 
     @Test
     @Description("Should create account with 000000 when accounts file exist but it's empty")
-    void t3() {
+    void t3() throws Exception {
         // given
         accountRepository.save(new Account("000000", 1, Collections.emptyList()));
         accountRepository.deleteById("000000");
@@ -88,13 +89,29 @@ class AddAccountCommandTest {
 
     @Test
     @Description("Should throw an error when wrong input for add_account")
-    void t4() {
+    void t4() throws Exception {
         // when
         actual.runTheCommand("add_acount");
         // then
         String whatShouldBePrinted = "Input entered is not recognized as a command, enter 'help' to display possible options.\n";
         final String whatWasPrinted = outputStreamCaptor.toString().replaceAll("\r", "");
         assertEquals(whatWasPrinted, whatShouldBePrinted);
+    }
+
+    @Test
+    @Description("Should increase the account number respectively")
+    void t29() throws Exception {
+
+        // given
+        accountRepository.save(new Account("99999", 10, Collections.emptyList()));
+
+        // when
+        new AddAccountCommand().execute();
+
+        // then
+        final Account byId = accountRepository.findById("100000");
+        assertEquals(0, byId.getBalance());
+
     }
 
 }

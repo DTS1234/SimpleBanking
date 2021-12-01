@@ -3,6 +3,7 @@ package main.upm.simple.banking.logic.account;
 import main.upm.simple.banking.model.Account;
 import main.upm.simple.banking.persistance.AccountRepository;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ListAccountNumbersCommand {
     /**
      * This command displays a list of all accounts sorted descending by account number.
      */
-    public void execute() {
+    public void execute() throws IOException {
         final List<Account> all = AccountRepository.getInstance().findAll();
 
         if (all.isEmpty()) {

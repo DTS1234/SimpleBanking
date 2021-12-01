@@ -28,11 +28,11 @@ public class TransactionRepository implements Repository<Transaction> {
     }
 
     public static TransactionRepository getInstance() {
-        return transactionRepository == null ? new TransactionRepository() : transactionRepository;
+        return transactionRepository = new TransactionRepository();
     }
 
     @Override
-    public Transaction save(Transaction transactionToBeSaved) {
+    public Transaction save(Transaction transactionToBeSaved) throws Exception {
         if (findAll().stream().anyMatch(transaction -> transactionToBeSaved.getId().equals(transaction.getId()))) {
             String newLine = getAsALine(transactionToBeSaved);
             Optional<Transaction> toBeReplaced = findAll().stream().filter(transaction -> transactionToBeSaved.getId().equals(transaction.getId())).findFirst();
@@ -65,14 +65,14 @@ public class TransactionRepository implements Repository<Transaction> {
     }
 
     @Override
-    public Transaction findById(Object id) {
+    public Transaction findById(Object id) throws IOException {
         return findAll().stream().filter(transaction -> transaction.getId().equals(id)).findFirst().orElseThrow(
                 () -> new TransactionNotFoundException("There is no transaction with the following id " + id)
         );
     }
 
     @Override
-    public List<Transaction> findAll() {
+    public List<Transaction> findAll() throws IOException {
 
         List<Transaction> result = new ArrayList<>();
 
@@ -80,7 +80,7 @@ public class TransactionRepository implements Repository<Transaction> {
 
             while (true) {
                 String dataLine = bufferedReader.readLine();
-                if (dataLine == null || dataLine.isEmpty()) break;
+                if (dataLine == null) break;
                 String[] split = dataLine.split(",");
                 Long id = Long.valueOf(split[0]);
                 String receiversAccount = split[1];
@@ -90,23 +90,20 @@ public class TransactionRepository implements Repository<Transaction> {
             }
 
         } catch (IOException ioException) {
+
             if (ioException instanceof NoSuchFileException) {
                 File file = new File(TRANSACTIONS_TXT);
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                file.createNewFile();
                 return findAll();
             }
-            ioException.printStackTrace();
+            throw new FileIsOpenException();
         }
 
         return result;
     }
 
     @Override
-    public void deleteById(Object id) {
+    public void deleteById(Object id) throws IOException {
         List<Transaction> all = findAll();
         Transaction transactionToBeDeleted = all.stream().filter(transaction -> transaction.getId().equals(id)).findFirst().orElseThrow(
                 () -> new TransactionNotFoundException("There is no transaction with the following id " + id));

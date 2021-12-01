@@ -9,19 +9,27 @@ import main.upm.simple.banking.logic.transaction.ViewTransactionsCommand;
 import main.upm.simple.banking.persistance.AccountNotFoundException;
 import main.upm.simple.banking.persistance.TransactionNotFoundException;
 
-import java.util.Scanner;
-
 /**
  * @author akazmierczak
  * @create 17.11.2021
  */
 public class UIInterface {
 
-    public void run() {
+    private final UIInterfaceRead uiInterfaceRead;
+
+    public UIInterface(UIInterfaceRead read) {
+        this.uiInterfaceRead = read;
+    }
+
+    public UIInterface() {
+        this.uiInterfaceRead = new UIInterfaceReadImpl();
+    }
+
+    public void run() throws Exception {
 
         while (true) {
             System.out.println("Enter the command: ");
-            String input = readAnInput();
+            String input = uiInterfaceRead.readAnInput();
             try {
                 runTheCommand(input);
             } catch (InvalidMoneyFormat |
@@ -40,14 +48,13 @@ public class UIInterface {
     /**
      * Depending on the input should run appropriate command.
      */
-    public void runTheCommand(String input) {
+    public void runTheCommand(String input) throws Exception {
         switch (input) {
             case "help":
                 new HelpCommand().execute();
                 break;
             case "exit":
                 new ExitCommand().execute();
-                break;
             case "list_accounts":
                 new ListAccountsCommand().execute();
                 break;
@@ -62,7 +69,7 @@ public class UIInterface {
         }
     }
 
-    private void runCommandWithArgument(String input) {
+    private void runCommandWithArgument(String input) throws Exception {
         if (input.startsWith("delete_account ")) {
             String accountNumber = getArguments(input, 1, "Delete command should receive one argument in the format of account number")[1];
             Verify.verifyAccountNumber(accountNumber);
@@ -132,12 +139,5 @@ public class UIInterface {
         return s;
     }
 
-    /**
-     * Should return the character entered by the user.
-     */
-    private String readAnInput() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
-    }
 
 }

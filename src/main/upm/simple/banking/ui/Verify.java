@@ -2,6 +2,7 @@ package main.upm.simple.banking.ui;
 
 import main.upm.simple.banking.persistance.AccountRepository;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,9 +11,6 @@ public class Verify {
     public static boolean onlyDigits(String str) {
         String regex = "[0-9]+";
         Pattern p = Pattern.compile(regex);
-        if (str == null) {
-            return false;
-        }
         Matcher m = p.matcher(str);
         return m.matches();
     }
@@ -29,7 +27,7 @@ public class Verify {
         }
     }
 
-    public static void verifyAccountNumber(String accountNumber) {
+    public static void verifyAccountNumber(String accountNumber) throws IOException {
 
         if (accountNumber.length() != 6) {
             throw new InvalidAccountNumber(accountNumber);
@@ -38,6 +36,7 @@ public class Verify {
         if (!onlyDigits(accountNumber)) {
             throw new InvalidAccountNumber(accountNumber);
         }
+
         AccountRepository.getInstance().findById(accountNumber);
 
     }

@@ -4,6 +4,8 @@ import jdk.jfr.Description;
 import main.upm.simple.banking.TestUtil;
 import main.upm.simple.banking.model.Account;
 import main.upm.simple.banking.persistance.AccountRepository;
+import main.upm.simple.banking.ui.UIInterface;
+import main.upm.simple.banking.ui.UIInterfaceReadImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,25 +21,25 @@ import java.util.Collections;
 class ListAccountNumbersCommandTest {
 
     private AddAccountCommand addAccountCommand = new AddAccountCommand();
-    private ListAccountNumbersCommand subject;
+    private UIInterface subject;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
     @BeforeEach
     void setUp() {
         TestUtil.deleteFiles();
-        subject = new ListAccountNumbersCommand();
+        subject = new UIInterface(new UIInterfaceReadImpl());
         System.setOut(new PrintStream(outputStreamCaptor));
     }
 
     @Test
     @Description("Should display a list of account numbers in descending order.")
-    void t18() {
+    void t18() throws Exception {
         // given
         addAccountCommand.execute();
         addAccountCommand.execute();
         addAccountCommand.execute();
         // when
-        subject.execute();
+        subject.runTheCommand("list_accountnumbers");
         // then
         final String whatWasPrinted = outputStreamCaptor.toString();
         String whatShouldBePrinted = "Account numbers: \n" +
@@ -49,9 +51,9 @@ class ListAccountNumbersCommandTest {
 
     @Test
     @Description("No accounts, should print EMPTY message.")
-    void t19() {
+    void t19() throws Exception {
         // when
-        subject.execute();
+        subject.runTheCommand("list_accountnumbers");
         // then
         final String whatWasPrinted = outputStreamCaptor.toString();
         String whatShouldBePrinted = "There are no existing accounts";

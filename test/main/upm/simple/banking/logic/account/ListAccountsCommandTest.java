@@ -2,6 +2,8 @@ package main.upm.simple.banking.logic.account;
 
 import jdk.jfr.Description;
 import main.upm.simple.banking.TestUtil;
+import main.upm.simple.banking.ui.UIInterface;
+import main.upm.simple.banking.ui.UIInterfaceReadImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +18,7 @@ import java.io.PrintStream;
  */
 class ListAccountsCommandTest {
 
-    private ListAccountsCommand subject;
+    private UIInterface subject;
     private AddAccountCommand addAccountCommand;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
@@ -28,20 +30,20 @@ class ListAccountsCommandTest {
     @BeforeEach
     void setUp() {
         TestUtil.deleteFiles();
-        subject = new ListAccountsCommand();
+        subject = new UIInterface(new UIInterfaceReadImpl());
         addAccountCommand = new AddAccountCommand();
         System.setOut(new PrintStream(outputStreamCaptor));
     }
 
     @Test
     @Description("Should print the numbers and balances when those exist.")
-    void t20() {
+    void t20() throws Exception {
         // given
         addAccountCommand.execute();
         addAccountCommand.execute();
         addAccountCommand.execute();
         // when
-        subject.execute();
+        subject.runTheCommand("list_accounts");
         // then
         final String whatWasPrinted = outputStreamCaptor.toString();
         final String whatShouldBePrinted =
@@ -54,9 +56,9 @@ class ListAccountsCommandTest {
     }
 
     @Test
-    void t21() {
+    void t21() throws Exception {
         // when
-        subject.execute();
+        subject.runTheCommand("list_accounts");
         // then
         final String whatWasPrinted = outputStreamCaptor.toString();
         final String whatShouldBePrinted = "There are no existing accounts";

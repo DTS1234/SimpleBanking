@@ -25,7 +25,7 @@ public class WithdrawCommand {
      * The account balance is updated accordingly. The user is notified of the successful
      * withdrawal. Furthermore, the previous and the new balance are displayed.
      */
-    public void execute() {
+    public void execute() throws Exception {
         Account selectedAccount = accountRepository.findById(accountNumber);
         double currentBalance = selectedAccount.getBalance();
         double newBalance = currentBalance - value;

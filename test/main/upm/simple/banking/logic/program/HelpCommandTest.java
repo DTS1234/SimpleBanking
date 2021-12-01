@@ -28,7 +28,7 @@ class HelpCommandTest {
 
     @Test
     @Description("Should print a message with description of every possible command.")
-    void t25() {
+    void t25() throws Exception {
         subject.runTheCommand("help");
         final String whatWasPrinted = outputStreamCaptor.toString();
         final String whatShouldBePrinted = "#-----------------------------------------------------------------------------------#\n" +

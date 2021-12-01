@@ -32,7 +32,7 @@ class ViewAccountCommandTest {
     }
 
     @Test
-    void t23() {
+    void t23() throws Exception {
         // given
         accountRepository.save(new Account("000000", 1, Collections.emptyList()));
         // when

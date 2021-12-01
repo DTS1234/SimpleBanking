@@ -23,7 +23,7 @@ public class AddMoneyCommand {
      * user afterwards that the addition has been successful. Furthermore, the previous and
      * the new balance are displayed.
      */
-    public void execute() {
+    public void execute() throws Exception {
         Account selectedAccount = accountRepository.findById(accountNumber);
         double currentBalance = selectedAccount.getBalance();
         double newBalance = currentBalance + value;

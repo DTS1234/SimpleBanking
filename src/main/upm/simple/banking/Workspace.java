@@ -10,7 +10,7 @@ import main.upm.simple.banking.persistance.TransactionRepository;
  */
 public class Workspace {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         TransactionRepository instance = TransactionRepository.getInstance();
 

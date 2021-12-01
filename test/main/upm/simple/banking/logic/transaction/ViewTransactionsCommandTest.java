@@ -8,6 +8,7 @@ import main.upm.simple.banking.persistance.AccountNotFoundException;
 import main.upm.simple.banking.persistance.AccountRepository;
 import main.upm.simple.banking.persistance.TransactionRepository;
 import main.upm.simple.banking.ui.UIInterface;
+import main.upm.simple.banking.ui.WrongInputException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ class ViewTransactionsCommandTest {
 
     @Test
     @Description("No transactions, should print message about empty transactions when view_transactions called.")
-    void t10() {
+    void t10() throws Exception {
         // when
         subject.runTheCommand("view_transactions");
         // then
@@ -56,7 +57,7 @@ class ViewTransactionsCommandTest {
 
     @Test
     @Description("Should display all transactions.")
-    void t11() {
+    void t11() throws Exception {
         // given
         transactionRepository.save(new Transaction(1L, "000000", "000001", 10));
         transactionRepository.save(new Transaction(2L, "000001", "000003", 10));
@@ -78,7 +79,7 @@ class ViewTransactionsCommandTest {
 
     @Test
     @Description("Should return transactions only for account passed.")
-    void t12() {
+    void t12() throws Exception {
         // given
         AccountRepository.getInstance().save(new Account("000000", 10, Collections.emptyList()));
         transactionRepository.save(new Transaction(1L, "000000", "000001", 10));
@@ -101,7 +102,7 @@ class ViewTransactionsCommandTest {
 
     @Test
     @Description("Should return transactions only for account passed.")
-    void t13() {
+    void t13() throws Exception {
         // given
         AccountRepository.getInstance().save(new Account("000001", 10, Collections.emptyList()));
         AccountRepository.getInstance().save(new Account("000003", 10, Collections.emptyList()));
@@ -125,7 +126,7 @@ class ViewTransactionsCommandTest {
 
     @Test
     @Description("Should throw an error about account that does not exist")
-    void t14() {
+    void t14() throws Exception {
         // given
         transactionRepository.save(new Transaction(1L, "000000", "000001", 10));
         transactionRepository.save(new Transaction(2L, "000001", "000003", 10));
@@ -137,7 +138,7 @@ class ViewTransactionsCommandTest {
 
     @Test
     @Description("Should print a message when there are no transactions.")
-    void t22() {
+    void t22() throws Exception {
         AccountRepository.getInstance().save(new Account("000000", 10, Collections.emptyList()));
         // when
         subject.runTheCommand("view_transactions 000000");
@@ -145,6 +146,12 @@ class ViewTransactionsCommandTest {
         final String whatWasPrinted = outputStreamCaptor.toString();
         final String whatShouldBesPrinted = "No transactions connected to that account.\r\n";
         assertEquals(whatShouldBesPrinted, whatWasPrinted);
+    }
+
+    @Test
+    @Description("Should throw an error about to many arguments")
+    void t33() throws Exception {
+        assertThrows(WrongInputException.class, () -> subject.runTheCommand("view_transactions 000000 0000 0000 0000"));
     }
 
 }

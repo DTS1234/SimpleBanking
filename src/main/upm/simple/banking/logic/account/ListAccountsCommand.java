@@ -3,6 +3,7 @@ package main.upm.simple.banking.logic.account;
 import main.upm.simple.banking.model.Account;
 import main.upm.simple.banking.persistance.AccountRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class ListAccountsCommand {
      * This command displays a list of accounts, including the respective current account
      * balance.
      */
-    public void execute() {
+    public void execute() throws IOException {
         final List<Account> all = AccountRepository.getInstance().findAll();
 
         if (all.isEmpty()) {

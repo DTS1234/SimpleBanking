@@ -19,19 +19,24 @@ import java.util.stream.Collectors;
  */
 public class AccountRepository implements Repository<Account> {
 
-    public static final String ACCOUNTS_TXT = "accounts.txt";
+    public static String ACCOUNTS_TXT = "accounts.txt";
     public static final String EMPTY = "empty";
     private static AccountRepository accountRepository = null;
 
-    private AccountRepository() {
+    public AccountRepository() {
+    }
+
+    public AccountRepository(String name) {
+        ACCOUNTS_TXT = name;
     }
 
     public static AccountRepository getInstance() {
-        return accountRepository == null ? new AccountRepository() : accountRepository;
+        ACCOUNTS_TXT = "accounts.txt";
+        return new AccountRepository();
     }
 
     @Override
-    public Account save(Account accountToBeSaved) {
+    public Account save(Account accountToBeSaved) throws Exception {
 
         if (findAll().stream().anyMatch(account -> accountToBeSaved.getAccountNumber().equals(account.getAccountNumber()))) {
             String newLine = getAsALine(accountToBeSaved);
@@ -45,7 +50,6 @@ public class AccountRepository implements Repository<Account> {
                 accountsWriter.write(accountToBeSaved.getAccountNumber() + "," + accountToBeSaved.getBalance() + ",");
                 accountsWriter.write(EMPTY);
                 accountsWriter.write(System.lineSeparator());
-
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             } finally {
@@ -72,14 +76,14 @@ public class AccountRepository implements Repository<Account> {
     }
 
     @Override
-    public Account findById(Object accountNumber) {
+    public Account findById(Object accountNumber) throws IOException {
         return findAll().stream().filter(account -> account.getAccountNumber().equals(accountNumber)).findFirst().orElseThrow(
                 () -> new AccountNotFoundException("There is no account with that number : " + accountNumber)
         );
     }
 
     @Override
-    public List<Account> findAll() {
+    public List<Account> findAll() throws IOException {
 
         List<Account> result = new ArrayList<>();
 
@@ -87,7 +91,7 @@ public class AccountRepository implements Repository<Account> {
 
             while (true) {
                 String dataLine = bufferedReader.readLine();
-                if (dataLine == null || dataLine.isEmpty()) break;
+                if (dataLine == null) break;
 
                 String[] split = dataLine.split(",");
 
@@ -102,30 +106,30 @@ public class AccountRepository implements Repository<Account> {
                     String[] idsArray = idsLine.split(";");
                     Arrays.stream(idsArray).forEach(idString -> transactionIds.add(Long.parseLong(idString)));
                 }
-                result.add(new Account(accountNumber, balance, transactionIds));
+                addToResult(result, accountNumber, balance, transactionIds);
             }
 
         } catch (IOException ioException) {
 
             if (ioException instanceof NoSuchFileException) {
                 File file = new File(ACCOUNTS_TXT);
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                file.createNewFile();
                 return findAll();
             }
 
-            ioException.printStackTrace();
+            throw new FileIsOpenException();
 
         }
 
         return result;
     }
 
+    public void addToResult(List<Account> result, String accountNumber, double balance, List<Long> transactionIds) throws IOException {
+        result.add(new Account(accountNumber, balance, transactionIds));
+    }
+
     @Override
-    public void deleteById(Object accountNumber) {
+    public void deleteById(Object accountNumber) throws IOException {
         List<Account> all = findAll();
         Account accountToBeDeleted = all.stream().filter(account -> account.getAccountNumber().equals(accountNumber)).findFirst().orElseThrow(
                 () -> new AccountNotFoundException("There is no account with that number : " + accountNumber)

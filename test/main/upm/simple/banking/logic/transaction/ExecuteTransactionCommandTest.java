@@ -2,8 +2,11 @@ package main.upm.simple.banking.logic.transaction;
 
 import jdk.jfr.Description;
 import main.upm.simple.banking.model.Account;
+import main.upm.simple.banking.model.Transaction;
 import main.upm.simple.banking.persistance.AccountRepository;
 import main.upm.simple.banking.persistance.TransactionRepository;
+import main.upm.simple.banking.ui.InvalidAccountNumber;
+import main.upm.simple.banking.ui.InvalidMoneyFormat;
 import main.upm.simple.banking.ui.UIInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +33,7 @@ class ExecuteTransactionCommandTest {
 
     @Test
     @Description("Should substract from the sender and add to the receiver")
-    void t27() {
+    void t27() throws Exception {
         accountRepository.save(new Account("000000", 5, Collections.emptyList()));
         accountRepository.save(new Account("000001", 5, Collections.emptyList()));
 
@@ -45,13 +48,29 @@ class ExecuteTransactionCommandTest {
 
     @Test
     @Description("Should throw an error when the value of the transactions exceeds the balance")
-    void t28() {
+    void t28() throws Exception {
         accountRepository.save(new Account("000000", 2, Collections.emptyList()));
         accountRepository.save(new Account("000001", 5, Collections.emptyList()));
 
         assertThrows(InvalidTransactionException.class, () -> subject.runTheCommand("execute_transaction 000000 000001 10"));
     }
 
+    @Test
+    @Description("Should throw error when not all account number arguments are digits.")
+    void t34() {
+        assertThrows(InvalidAccountNumber.class, () -> subject.runTheCommand("execute_transaction wrong1 000000 12"));
+    }
 
+    @Test
+    @Description("Should throw an error when money is not a number.")
+    void t35() {
+        assertThrows(InvalidMoneyFormat.class, () -> subject.runTheCommand("execute_transaction 000000 000000 someMoney"));
+    }
+
+    @Test
+    @Description("Should throw an error when money is not a number.")
+    void t36() {
+        assertThrows(InvalidMoneyFormat.class, () -> subject.runTheCommand("execute_transaction 000000 000000 someMoney"));
+    }
 
 }

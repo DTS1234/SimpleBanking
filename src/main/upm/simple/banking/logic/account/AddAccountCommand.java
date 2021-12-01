@@ -21,7 +21,7 @@ public class AddAccountCommand {
      * notified that the new account has been created and the account number and balance
      * are shown.
      */
-    public void execute() {
+    public void execute() throws Exception {
 
         List<Account> currentAccounts = accountRepository.findAll();
 
@@ -41,7 +41,7 @@ public class AddAccountCommand {
 
     }
 
-    private Account saveAccountWithNewNumber(List<Account> currentAccounts) {
+    private Account saveAccountWithNewNumber(List<Account> currentAccounts) throws Exception {
         int size = currentAccounts.size();
         Account lastAccount = currentAccounts.get(size - 1);
         String lastAccountNumber = lastAccount.getAccountNumber();

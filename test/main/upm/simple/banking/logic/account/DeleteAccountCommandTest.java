@@ -1,7 +1,9 @@
 package main.upm.simple.banking.logic.account;
 
 import jdk.jfr.Description;
+import main.upm.simple.banking.TestUtil;
 import main.upm.simple.banking.model.Account;
+import main.upm.simple.banking.persistance.AccountNotFoundException;
 import main.upm.simple.banking.persistance.AccountRepository;
 import main.upm.simple.banking.ui.InvalidAccountNumber;
 import main.upm.simple.banking.ui.UIInterface;
@@ -24,12 +26,13 @@ class DeleteAccountCommandTest {
 
     @BeforeEach
     void setUp() {
+        TestUtil.deleteFiles();
         accountRepository = AccountRepository.getInstance();
     }
 
     @Test
     @Description("Should invoke delete command transaction.")
-    void t7() {
+    void t7() throws Exception {
         //given
         accountRepository.save(new Account("000000", 10, Collections.emptyList()));
         //when
@@ -54,4 +57,13 @@ class DeleteAccountCommandTest {
     void t9() {
         assertThrows(InvalidAccountNumber.class, () -> new UIInterface().runTheCommand("delete_account wrong11"));
     }
+
+    @Test
+    @Description("Should throw an error when no account found.")
+    void t31() {
+
+        Assertions.assertThrows(AccountNotFoundException.class, () -> new UIInterface().runTheCommand("delete_account 000000"));
+
+    }
+
 }

@@ -28,7 +28,7 @@ public class ExecuteTransactionCommand {
      * amount from the sending account. The user is notified of a successful transaction
      * and for both accounts the previous and the new account are displayed.
      */
-    public void execute() {
+    public void execute() throws Exception {
         TransactionRepository transactionRepo = TransactionRepository.getInstance();
         AccountRepository accountRepo = AccountRepository.getInstance();
 
@@ -59,7 +59,7 @@ public class ExecuteTransactionCommand {
         System.out.println(message);
     }
 
-    private void updateAccounts(AccountRepository accountRepo, Long id, Account sendersAccount, Account receiversAccount) {
+    private void updateAccounts(AccountRepository accountRepo, Long id, Account sendersAccount, Account receiversAccount) throws Exception {
         // update sender's account balance
         double newSendersBalance = sendersAccount.getBalance() - value;
         if (newSendersBalance < 0) {

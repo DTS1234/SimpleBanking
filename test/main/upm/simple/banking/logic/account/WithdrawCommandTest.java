@@ -31,7 +31,7 @@ class WithdrawCommandTest {
 
     @Test
     @Description("Should withdraw money properly.")
-    void t15() {
+    void t15() throws Exception {
         // given
         accountRepository.save(new Account("000000", 5, Collections.emptyList()));
         // when
@@ -45,7 +45,7 @@ class WithdrawCommandTest {
 
     @Test
     @Description("Should throw an error when negative value indicated")
-    void t16() {
+    void t16() throws Exception {
         // given
         accountRepository.save(new Account("000000", 5, Collections.emptyList()));
         // when
@@ -54,7 +54,7 @@ class WithdrawCommandTest {
 
     @Test
     @Description("Should throw an error when amount specified exceeds the balance")
-    void t17() {
+    void t17() throws Exception {
         // given
         accountRepository.save(new Account("000000", 5, Collections.emptyList()));
         // when

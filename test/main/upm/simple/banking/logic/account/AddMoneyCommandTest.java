@@ -30,7 +30,7 @@ class AddMoneyCommandTest {
 
     @Test
     @Description("Should add money to existing account taking into account the current balance.")
-    void t5() {
+    void t5() throws Exception {
         // given
         accountRepository.save(new Account("000000", 5, Collections.emptyList()));
         // when
@@ -44,7 +44,7 @@ class AddMoneyCommandTest {
 
     @Test
     @Description("Should throw an error when incorrect money value is entered")
-    void t6() {
+    void t6() throws Exception {
         // given
         accountRepository.save(new Account("000000", 5, Collections.emptyList()));
         // when
