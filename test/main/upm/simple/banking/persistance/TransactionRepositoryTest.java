@@ -27,12 +27,12 @@ class TransactionRepositoryTest {
     }
 
     @Test
-    void t43() throws IOException {
+    void t39() throws IOException {
         assertThrows(TransactionNotFoundException.class, () -> TransactionRepository.getInstance().findById(1));
     }
 
     @Test
-    void t44() throws Exception {
+    void t40() throws Exception {
         final TransactionRepository instance = TransactionRepository.getInstance();
         instance.save(new Transaction(1L, "000000", "000001", 10));
         final Transaction byId = instance.findById(1L);
@@ -40,7 +40,7 @@ class TransactionRepositoryTest {
     }
 
     @Test
-    void t45() throws Exception {
+    void t41() throws Exception {
         final TransactionRepository instance = TransactionRepository.getInstance();
         instance.save(new Transaction(1L, "000000", "000001", 10));
 
@@ -50,13 +50,13 @@ class TransactionRepositoryTest {
     }
 
     @Test
-    void t46() throws Exception {
+    void t42() throws Exception {
         final TransactionRepository instance = TransactionRepository.getInstance();
         assertThrows(TransactionNotFoundException.class, () -> instance.deleteById(1L));
     }
 
     @Test
-    void t47() throws IOException {
+    void t43() throws IOException {
         final RandomAccessFile raFile = new RandomAccessFile(new File("transactions.txt"), "rw");
         raFile.getChannel().lock();
 

@@ -1,7 +1,7 @@
 package main.upm.simple.banking.persistance;
 
 public class FileIsOpenException extends RuntimeException {
-    public FileIsOpenException() {
-        System.out.println("Please close the accounts.txt file while using the program.");
+    public FileIsOpenException(String fileName) {
+        System.out.println("Please close the " + fileName + " file while using the program.");
     }
 }

@@ -57,19 +57,13 @@ class ExecuteTransactionCommandTest {
 
     @Test
     @Description("Should throw error when not all account number arguments are digits.")
-    void t34() {
+    void t33() {
         assertThrows(InvalidAccountNumber.class, () -> subject.runTheCommand("execute_transaction wrong1 000000 12"));
     }
 
     @Test
     @Description("Should throw an error when money is not a number.")
-    void t35() {
-        assertThrows(InvalidMoneyFormat.class, () -> subject.runTheCommand("execute_transaction 000000 000000 someMoney"));
-    }
-
-    @Test
-    @Description("Should throw an error when money is not a number.")
-    void t36() {
+    void t34() {
         assertThrows(InvalidMoneyFormat.class, () -> subject.runTheCommand("execute_transaction 000000 000000 someMoney"));
     }
 

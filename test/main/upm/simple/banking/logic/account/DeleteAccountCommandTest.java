@@ -61,9 +61,7 @@ class DeleteAccountCommandTest {
     @Test
     @Description("Should throw an error when no account found.")
     void t31() {
-
         Assertions.assertThrows(AccountNotFoundException.class, () -> new UIInterface().runTheCommand("delete_account 000000"));
-
     }
 
 }

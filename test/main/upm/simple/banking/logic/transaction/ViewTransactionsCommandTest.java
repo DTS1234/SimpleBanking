@@ -150,7 +150,7 @@ class ViewTransactionsCommandTest {
 
     @Test
     @Description("Should throw an error about to many arguments")
-    void t33() throws Exception {
+    void t32() throws Exception {
         assertThrows(WrongInputException.class, () -> subject.runTheCommand("view_transactions 000000 0000 0000 0000"));
     }
 

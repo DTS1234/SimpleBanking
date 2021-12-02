@@ -44,26 +44,25 @@ class UIInterfaceTest {
 
     @Test
     @Description("Should ask for input until exit command is not invoked.")
-    void t37() throws Exception {
+    void t35() throws Exception {
         when(read.readAnInput()).thenReturn("add_account", "exit");
-
         assertThrows(ExitProgram.class, () -> subject.run());
     }
 
     @Test
     @Description("Should throw InvalidAccountNumber call for another input an exit.")
-    void t38() throws Exception {
+    void t36() throws Exception {
         when(read.readAnInput())
                 .thenReturn("execute_transaction 2131242 123123 10.0", "exit");
         assertThrows(ExitProgram.class, () -> subject.run());
     }
 
     @Test
-    @Description("Should call multiple methods and exit.")
-    void t39() throws Exception {
+    @Description("Should call both commands without and with arguments and quit")
+    void t45() throws Exception {
         when(read.readAnInput())
-                .thenReturn("execute_transaction 2131242 123123 10.0", "add_account",
-                        "list_accounts", "list_accountnumbers", "exit");
+                .thenReturn("add_account", "add_money 000000 1", "exit");
         assertThrows(ExitProgram.class, () -> subject.run());
     }
+
 }

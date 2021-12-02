@@ -35,7 +35,7 @@ class AccountRepositoryTest {
 
     @Test
     @Description("Should throw error when file is open while saving.")
-    void t39() throws Exception {
+    void t37() throws Exception {
 
         final RandomAccessFile raFile = new RandomAccessFile(new File("accounts.txt"), "rw");
         raFile.getChannel().lock();
@@ -46,12 +46,8 @@ class AccountRepositoryTest {
     }
 
     @Test
-    void t41() throws IOException {
-        assertThrows(AccountNotFoundException.class, () -> AccountRepository.getInstance().deleteById("000000"));
-    }
-
-    @Test
-    void t42() {
+    void t38() {
         AccountRepository.getInstance().removeLine("line", "testFile.txt");
     }
+
 }

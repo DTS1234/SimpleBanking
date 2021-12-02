@@ -96,7 +96,7 @@ public class TransactionRepository implements Repository<Transaction> {
                 file.createNewFile();
                 return findAll();
             }
-            throw new FileIsOpenException();
+            throw new FileIsOpenException(TRANSACTIONS_TXT);
         }
 
         return result;

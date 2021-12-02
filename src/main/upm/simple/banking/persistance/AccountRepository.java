@@ -117,7 +117,7 @@ public class AccountRepository implements Repository<Account> {
                 return findAll();
             }
 
-            throw new FileIsOpenException();
+            throw new FileIsOpenException(ACCOUNTS_TXT);
 
         }
 
