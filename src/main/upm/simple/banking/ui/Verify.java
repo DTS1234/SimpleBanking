@@ -29,7 +29,7 @@ public class Verify {
 
     public static void verifyAccountNumber(String accountNumber) throws IOException {
 
-        if (accountNumber.length() != 6) {
+        if (accountNumber.length() != 7) {
             throw new InvalidAccountNumber(accountNumber);
         }
 
